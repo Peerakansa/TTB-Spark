@@ -1,0 +1,34 @@
+pipeline {
+    agent {
+        docker {
+            image 'mcr.microsoft.com/playwright:v1.43.1-jammy'
+        }
+    }
+    stages {
+        stage('Checkout Code From Git') {
+            steps {
+                git branch: 'main', credentialsId: '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', url: 'https://github.com/your-repo.git'
+            }
+        }
+        stage('install playwright') {
+            steps {
+                sh '''
+          npm i -D @playwright/test
+          npx playwright install
+        '''
+            }
+        }
+        stage('test') {
+            steps {
+                sh '''
+          npx playwright test
+        '''
+            }
+            post {
+                success {
+                    archiveArtifacts(artifacts: 'playwright-report/index.html', followSymlinks: false)
+                }
+            }
+        }
+    }
+}

@@ -11,7 +11,6 @@ test('Login success', async ({ page }) => {
   await login(page, 'tomsmith', 'SuperSecretPassword!')
   await expect(page.getByText('You logged into a secure area!')).toBeVisible();
   await page.getByRole('link', { name: 'Logout' }).click();
-  // await expect(page.getByText('You logged out of the secure area!', { exact: true })).toBeVisible();
   await expect(page.getByText('You logged out of the secure area!')).toBeVisible();
 });
 
